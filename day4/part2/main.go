@@ -3,32 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	file, err := os.Open("./input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	scanner := bufio.NewScanner(file)
-	counter := 0
-
-	for scanner.Scan() {
-		if isFullyOverlap(split(scanner.Text())) {
-			counter++
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(counter)
+func isFullyOverlap(x []int) bool {
+	return !(x[1] < x[2] || x[0] > x[3])
 }
 
 func split(str string) []int {
@@ -48,6 +29,37 @@ func split(str string) []int {
 	return r
 }
 
-func isFullyOverlap(x []int) bool {
-	return !(x[1] < x[2] || x[0] > x[3])
+func main() {
+	scanner := scan("./input.txt")
+	/************************************************************
+
+		Main logic is written below
+		scanner.Scan() - scans a new line
+		scanner.Text() - returns a new scanned line
+		scanner.Err()  - returns an occured error while scanning
+
+
+	************************************************************/
+	counter := 0
+
+	for scanner.Scan() {
+		if isFullyOverlap(split(scanner.Text())) {
+			counter++
+		}
+	}
+	check(scanner.Err())
+
+	fmt.Println(counter) // output: 938
+}
+
+func scan(path string) *bufio.Scanner {
+	file, err := os.Open(path)
+	check(err)
+	return bufio.NewScanner(file)
+}
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

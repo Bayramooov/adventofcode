@@ -3,52 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 )
-
-func main() {
-	file, err := os.Open("./input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	scanner := bufio.NewScanner(file)
-
-	counter := 0
-	badges := make([]string, 3)
-	sum := 0
-
-	cnt := 0
-
-	for scanner.Scan() {
-		badges[counter] = scanner.Text()
-		counter++
-		if counter > 2 {
-			cnt++
-			letter := findEqualLetter(badges)
-			/*
-				a - z => 1 - 26 ----- 97 - 122
-				A - Z => 27 - 52 ----- 65 - 90
-			*/
-			fmt.Println(badges)
-			if letter >= 97 {
-				sum += letter - 96
-			} else if letter >= 65 {
-				sum += letter - 38
-			}
-			counter = 0
-			badges = make([]string, 3)
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(sum)
-	fmt.Println(cnt)
-}
 
 func findEqualLetter(str []string) int {
 	for i := 0; i < len(str[0]); i++ {
@@ -61,4 +17,52 @@ func findEqualLetter(str []string) int {
 		}
 	}
 	return 0
+}
+
+func main() {
+	scanner := scan("./input.txt")
+	/************************************************************
+
+		Main logic is written below
+		scanner.Scan() - scans a new line
+		scanner.Text() - returns a new scanned line
+		scanner.Err()  - returns an occured error while scanning
+
+
+	************************************************************/
+	i := 0
+	badges := make([]string, 3)
+	sum := 0
+
+	for scanner.Scan() {
+		badges[i] = scanner.Text()
+		i++
+		if i > 2 {
+			letter := findEqualLetter(badges)
+			//	a - z =>  1 - 26 (97 - 122)
+			//	A - Z => 27 - 52 (65 - 90)
+			if letter >= 97 {
+				sum += letter - 96
+			} else if letter >= 65 {
+				sum += letter - 38
+			}
+			i = 0
+			badges = make([]string, 3)
+		}
+	}
+	check(scanner.Err())
+
+	fmt.Println(sum) // output: 2703
+}
+
+func scan(path string) *bufio.Scanner {
+	file, err := os.Open(path)
+	check(err)
+	return bufio.NewScanner(file)
+}
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
