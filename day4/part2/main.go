@@ -33,10 +33,10 @@ func main() {
 	scanner := scan("./input.txt")
 	/************************************************************
 
-		Main logic is written below
-		scanner.Scan() - scans a new line
-		scanner.Text() - returns a new scanned line
-		scanner.Err()  - returns an occured error while scanning
+	  Main logic is written below
+	  scanner.Scan() - scans a new line
+	  scanner.Text() - returns a new scanned line
+	  scanner.Err()  - returns an occured error while scanning
 
 
 	************************************************************/

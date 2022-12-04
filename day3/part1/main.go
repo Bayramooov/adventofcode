@@ -21,10 +21,10 @@ func main() {
 	scanner := scan("./input.txt")
 	/************************************************************
 
-		Main logic is written below
-		scanner.Scan() - scans a new line
-		scanner.Text() - returns a new scanned line
-		scanner.Err()  - returns an occured error while scanning
+	  Main logic is written below
+	  scanner.Scan() - scans a new line
+	  scanner.Text() - returns a new scanned line
+	  scanner.Err()  - returns an occured error while scanning
 
 
 	************************************************************/
@@ -32,8 +32,8 @@ func main() {
 
 	for scanner.Scan() {
 		letter := findEqualLetter(scanner.Text())
-		//	a - z =>  1 - 26 (97 - 122)
-		//	A - Z => 27 - 52 (65 - 90)
+		// a - z =>  1 - 26 (97 - 122)
+		// A - Z => 27 - 52 (65 - 90)
 		if letter >= 97 {
 			sum += letter - 96
 		} else if letter >= 65 {
