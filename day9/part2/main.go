@@ -67,6 +67,8 @@ func (k *knot) chase() {
 
 func main() {
 	scanner := scan("./input.txt")
+	file, err := os.Create("./data2.txt")
+	check(err)
 	/************************************************************
 
 	  Main logic is written below
@@ -74,11 +76,10 @@ func main() {
 	  scanner.Text() - returns a new scanned line
 	  scanner.Err()  - returns an occured error while scanning
 
-
 	************************************************************/
-	grid := make([][]string, 10000)
+	grid := make([][]string, 1000)
 	for i, _ := range grid {
-		grid[i] = make([]string, 10000)
+		grid[i] = make([]string, 1000)
 		for j, _ := range grid[i] {
 			grid[i][j] = "."
 		}
@@ -86,7 +87,7 @@ func main() {
 
 	var r rope
 	// r.start(10, 15, 11)
-	r.start(10, 5000, 5000)
+	r.start(10, 500, 500)
 	head := r.knots[0]
 	tail := r.knots[len(r.knots)-1]
 
@@ -101,21 +102,16 @@ func main() {
 			switch move {
 			case "U":
 				head.i--
-				head.chase()
-				grid[tail.i][tail.j] = "#"
 			case "R":
 				head.j++
-				head.chase()
-				grid[tail.i][tail.j] = "#"
 			case "D":
 				head.i++
-				head.chase()
-				grid[tail.i][tail.j] = "#"
 			case "L":
 				head.j--
-				head.chase()
-				grid[tail.i][tail.j] = "#"
 			}
+			head.chase()
+			grid[head.i][head.j] = "1"
+			// grid[tail.i][tail.j] = "#"
 		}
 	}
 	check(scanner.Err())
@@ -125,11 +121,14 @@ func main() {
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[i]); j++ {
 			// fmt.Print(grid[i][j])
+			file.WriteString(grid[i][j])
+
 			if grid[i][j] == "#" {
 				sum++
 			}
 		}
 		// fmt.Println()
+		file.WriteString("\n")
 	}
 
 	fmt.Println(sum)
