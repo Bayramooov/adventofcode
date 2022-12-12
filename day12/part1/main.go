@@ -2,9 +2,16 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
+
+// it should return reachable neighbours' indexes [][]int
+func neighbours(i int, j int) {
+	// todo
+}
 
 func main() {
 	scanner := scan("./input.txt")
@@ -17,9 +24,29 @@ func main() {
 
 
 	************************************************************/
+	grid := make([][]string, 0)
+	start := make([]int, 2)
+	end := make([]int, 2)
+
 	for scanner.Scan() {
+		grid = append(grid, strings.Split(scanner.Text(), ""))
+	}
+
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if grid[i][j] == "S" {
+				start[0] = i
+				start[1] = j
+
+			} else if grid[i][j] == "E" {
+				end[0] = i
+				end[1] = j
+			}
+		}
 	}
 	check(scanner.Err())
+
+	fmt.Println(grid)
 }
 
 func scan(path string) *bufio.Scanner {
