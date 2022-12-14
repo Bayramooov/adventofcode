@@ -4,13 +4,53 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strings"
 )
 
-// it should return reachable neighbours' indexes [][]int
-func neighbours(i int, j int) {
-	// todo
+func init_vertex(name string) *Vertex {
+	var v Vertex
+	v.name = name
+	v.discovered = false
+	v.edges = make([]*Edge, 0)
+	return &v
+}
+
+type Vertex struct {
+	name           string
+	discovered     bool
+	total_cost     int
+	edges          []*Edge
+	preferred_edge *Edge
+}
+
+func (v *Vertex) create_neighbour(edge_cost int, vertex_name string, is_duplex bool) {
+	new_vertex := init_vertex(vertex_name)
+
+	e := Edge{next_vertex: new_vertex, cost: edge_cost}
+	v.edges = append(v.edges, &e)
+
+	if is_duplex {
+		new_vertex.edges = append(new_vertex.edges, &Edge{cost: e.cost, next_vertex: v})
+	}
+}
+
+func (v *Vertex) link(vertex *Vertex, cost int, is_duplex bool) {
+	if math.Abs(float64(int(v.name[0])-int(vertex.name[0]))) > 1 {
+		return
+	}
+	e := Edge{cost: cost, next_vertex: vertex}
+	v.edges = append(v.edges, &e)
+	if is_duplex {
+		e := Edge{cost: cost, next_vertex: v}
+		vertex.edges = append(vertex.edges, &e)
+	}
+}
+
+type Edge struct {
+	cost        int
+	next_vertex *Vertex
 }
 
 func main() {
